@@ -2,17 +2,11 @@
   "name": "parlervid",
   "version": "0.0.0",
   "private": true,
-  "scripts": {
-    "start": "vercel dev",
-    "deploy": "vercel deploy --prod"
-  },
   "keywords": [],
   "author": "David Konsumer <konsumer@jetboystudio.com> (http://konsumer.js.org)",
   "license": "MIT",
-  "devDependencies": {
-    "vercel": "^21.0.1"
-  },
   "dependencies": {
-    "axios": "^0.21.1"
+    "express": "^4.17.1",
+    "request": "^2.88.2"
   }
 }

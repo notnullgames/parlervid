@@ -1,7 +1,7 @@
-Dowmnload Parler videos after the takedown, like this:
+Download Parler videos after the takedown, like this:
 
 ```
-https://parlervid.vercel.app/VIDEOID
+https://parlervid.herokuapp.com/VIDEOID
 ```
 
 Where `VIDEOID` is the id of the video you want.
