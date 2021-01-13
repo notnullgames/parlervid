@@ -6,4 +6,4 @@ https://parlervid.herokuapp.com/VIDEOID
 
 Where `VIDEOID` is the id of the video you want.
 
-Goes great with [this map](https://kylemcdonald.net/parler/map/).
+Goes great with [this map](https://parlervid.herokuapp.com/).
