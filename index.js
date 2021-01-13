@@ -9,11 +9,11 @@ express()
   .get('/:id', (req, res) => {
     const { id } = req.params
     if (!id) {
-      console.log(`found ${id} in mirror1`)
       throw new Error('No id.')
     }
 
     if (mirror1[id]) {
+      console.log(`found ${id} in mirror1`)
       return res.redirect(mirror1[id])
     }
 
