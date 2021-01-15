@@ -16,11 +16,6 @@ express()
     res.sendFile('map.html', { root: __dirname })
   })
 
-  // all the data for the map
-  .get('/data.json', (req, res) => {
-    res.sendFile('data.json', { root: __dirname })
-  })
-
   // redirect to raw MP4 URL for youtube video
   .get('/yt/:id', async (req, res) => {
     const { id } = req.params

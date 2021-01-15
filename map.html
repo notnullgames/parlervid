@@ -35,9 +35,6 @@ var map = new mapboxgl.Map({
   attributionControl: false
 })
 
-map.hideAttribution = true
-map.showLogoBug = false
-
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
     layers: ['parler-videos-geocoded-3p3u5t']
