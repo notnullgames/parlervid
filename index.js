@@ -11,6 +11,16 @@ const mirrors = [
 const PORT = process.env.PORT || 5000
 
 express()
+  // show the map
+  .get('/', (req, res) => {
+    res.sendFile('map.html', { root: __dirname })
+  })
+
+  // all the data for the map
+  .get('/data.json', (req, res) => {
+    res.sendFile('data.json', { root: __dirname })
+  })
+
   // redirect to raw MP4 URL for youtube video
   .get('/yt/:id', async (req, res) => {
     const { id } = req.params
@@ -39,11 +49,6 @@ express()
         Host: 'video.parler.com'
       }
     }).pipe(res)
-  })
-  
-  // show the map
-  .get('/', (req, res) => {
-    res.sendFile('map.html', { root: __dirname })
   })
   
   .listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`))
