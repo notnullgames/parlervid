@@ -37,7 +37,7 @@ var map = new mapboxgl.Map({
 
 map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
-    layers: ['parler-videos-geocoded-3p3u5t']
+    layers: ['parler-drm78a']
   })
 
   if (!features.length) {
@@ -48,7 +48,7 @@ map.on('click', function(e) {
 
   var popup = new mapboxgl.Popup({ offset: [0, -15] })
     .setLngLat(feature.geometry.coordinates)
-    .setHTML(`${feature.properties.ID}<p>${feature.properties.Timestamp}</p><video autoplay width='100%' controls onerror="videoError(this)" src="/${feature.properties.ID}" />`)
+    .setHTML(`${feature.properties.id}<p>${feature.properties.time}</p>${feature.properties.displayname !== 'None' ? `<p>${feature.properties.displayname}</p>` : ''}${feature.properties.username !== 'None' ? `<p>${feature.properties.username}</p>` : ''}<video autoplay width='100%' controls onerror="videoError(this)" src="/${feature.properties.id}" />`)
     .addTo(map)
 })
 
