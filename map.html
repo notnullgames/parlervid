@@ -19,11 +19,50 @@
         <meta name="twitter:image" content="https://imgix.lifehacker.com.au/content/uploads/sites/4/2020/11/26/parler-hack.png" />
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
+        <style>
+          #controls {
+            font-family: sans-serif;
+            position: absolute;;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255, 0.6);
+            padding: 10px;
+          }
+        </style>
       </head>
       <body style='margin:0'>
         <div id='map' style='width: 100vw; height: 100vh;'></div>
+        
+        <!-- <div id="controls">
+          <strong>Filters</strong><br/>
+          <input type="checkbox" onchange="setUser(this.checked)" /> Has user-info<br/>
+          Date: <input type="date" onchange="setStart(this.value)" value="2018-06-01" /> - <input value="2021-01-11" type="date" onchange="setEnd(this.value)"/>
+        </div> -->
 
 <script>
+let user = false
+let start = "2018-06-01"
+let end =  "2021-01-11"
+
+function setStart(d) {
+  start = d
+  updateFilter()
+}
+
+function setEnd(d) {
+  end = d
+  updateFilter()
+}
+
+function setUser(d) {
+  user = d
+  updateFilter()
+}
+
+function updateFilter() {
+  console.log('update filter', { user, start, end })
+}
+
 mapboxgl.accessToken = "pk.eyJ1IjoiZGF2aWRrb25zdW1lciIsImEiOiJja2R0OHl2OXQwcGh1MnNtcGRleDRpeWRpIn0.lGkSZTG8nmxltvK6uF8NHw";
 
 var map = new mapboxgl.Map({
