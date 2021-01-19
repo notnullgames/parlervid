@@ -14,5 +14,8 @@
   },
   "scripts": {
     "start": "node index.js"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.5"
   }
 }
