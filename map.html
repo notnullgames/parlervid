@@ -121,7 +121,7 @@ map.on('click', (e) => {
     ${feature.properties.time}<br/>
     ${feature.properties.displayname !== 'None' ? `${feature.properties.displayname}<br/>` : ''}
     ${feature.properties.username !== 'None' ? `${feature.properties.username}<br/>` : ''}
-    <video autoplay width='100%' controls onerror="videoError(this)" src="/${feature.properties.id}" />
+    <video width='100%' controls onerror="videoError(this)" src="/${feature.properties.id}" />
   </p>
   `).join('')
 
