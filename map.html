@@ -37,6 +37,7 @@
           #controls, .mapboxgl-ctrl {
             opacity: 60%;
           }
+          button:focus {outline:0;}
         </style>
       </head>
       <body style='margin:0'>
@@ -116,8 +117,8 @@ map.on('click', (e) => {
   }
 
   const popupHTML = features.map(feature => `
-  <p>
-    ${feature.properties.id}<br/>
+  <p style="border: 1px solid black; padding: 5px;">
+    <strong>${feature.properties.id}</strong><br/>
     ${feature.properties.time}<br/>
     ${feature.properties.displayname !== 'None' ? `${feature.properties.displayname}<br/>` : ''}
     ${feature.properties.username !== 'None' ? `${feature.properties.username}<br/>` : ''}
@@ -136,7 +137,7 @@ map.on('click', (e) => {
 function videoError(vid){
   const div = document.createElement("div")
   div.className = 'error'
-  div.innerHTML = "Sorry, that video is not available.<br/>We'll have to wait for the archive to be hosted somewhere." 
+  div.innerHTML = `Sorry, <a href="${vid.src}">that video</a> is not available.<br/>We'll have to wait for the archive to be hosted somewhere.` 
   vid.replaceWith(div)
 }
 
