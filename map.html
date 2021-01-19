@@ -73,14 +73,15 @@ function setUser(d) {
 }
 
 function updateFilter() {
-  map.setFilter(dataLayer,
-    [
-      "all",
-      [filterFields.user ? '!=' : "==", "username", 'None'],
-      [">", "time", filterFields.start],
-      ["<", "time", filterFields.end]
-    ]
-  )
+  const filter = [
+    "all",
+    [">", "time", filterFields.start],
+    ["<", "time", filterFields.end]
+  ]
+  if (filterFields.user) {
+    filter.push(['!=', "username", 'None'])
+  }
+  map.setFilter(dataLayer, filter)
 }
 
 mapboxgl.accessToken = "pk.eyJ1IjoiZGF2aWRrb25zdW1lciIsImEiOiJja2R0OHl2OXQwcGh1MnNtcGRleDRpeWRpIn0.lGkSZTG8nmxltvK6uF8NHw";

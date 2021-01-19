@@ -3,8 +3,8 @@ This is a very simple proxy that tries to pick the right mirror for a video ID.
 */
 
 const express = require('express')
-const db = require('./db')
 const ytdl = require('ytdl-core')
+const db = require('./db')
 
 const { PORT = 5000 } = process.env
 
