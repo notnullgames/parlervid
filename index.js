@@ -20,23 +20,22 @@ express()
   .get('/yt/:id', async (req, res) => {
     const { id } = req.params
     const info = await ytdl.getInfo(`http://www.youtube.com/watch?v=${id}`)
-    res.redirect(301, info.formats.filter(v => v.container === 'mp4' && v.qualityLabel === '480p60').pop().url)
+    res.redirect(301, info.formats.filter(v => v.container === 'mp4' && v.quality === 'medium').pop().url)
   })
 
-  // find the best method of downloading the parler video
+  // find the best method of downloading the parler video & redirect to it
   .get('/:id', async (req, res) => {
     const { id } = req.params
     if (!id) {
       throw new Error('No id.')
     }
-    const r = await db.query('SELECT id, url FROM mirrors WHERE id=$1 LIMIT 1', [id])
-    if (r && r.rows && r.rows.length) {
-      console.log(`${id} mirror found: ${r.rows[0].url}`)
+    const r = await db.query('SELECT url FROM mirrors WHERE id=$1 LIMIT 1', [id])
+    if (r && r.rows && r.rows[0]) {
+      console.log(`${id} URL found: ${r.rows[0].url}`)
       return res.redirect(301, r.rows[0].url)
     } else {
-      const url = `https://pl.gammaspectra.live/video.parler.com/${id.substr(0, 2)}/${id.substr(2, 2)}/${id}`
-      console.log(`${id} not found in mirrors, trying ${url}`)
-      return res.redirect(301, url)
+      console.log(`No video URL found for ${id}`)
+      res.status(404).type('txt').send('Not found')
     }
   })
 

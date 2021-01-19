@@ -6,6 +6,7 @@
   "author": "David Konsumer <konsumer@jetboystudio.com> (http://konsumer.js.org)",
   "license": "MIT",
   "dependencies": {
+    "bencode": "^2.0.1",
     "express": "^4.17.1",
     "pg": "^8.5.1",
     "request": "^2.88.2",
