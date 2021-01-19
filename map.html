@@ -115,11 +115,23 @@ map.on('click', (e) => {
     return
   }
 
-  const feature = features[0]
+  console.log(features)
+
+  const popupHTML = features.map(feature => `
+  <p>
+    ${feature.properties.id}<br/>
+    ${feature.properties.time}<br/>
+    ${feature.properties.displayname !== 'None' ? `${feature.properties.displayname}<br/>` : ''}
+    ${feature.properties.username !== 'None' ? `${feature.properties.username}<br/>` : ''}
+    <video autoplay width='100%' controls onerror="videoError(this)" src="/${feature.properties.id}" />
+  </p>
+  `).join('')
+
+  console.log(popupHTML)
 
   const popup = new mapboxgl.Popup({ offset: [0, -15] })
-    .setLngLat(feature.geometry.coordinates)
-    .setHTML(`${feature.properties.id}<br/>${feature.properties.time}<br/>${feature.properties.displayname !== 'None' ? `${feature.properties.displayname}<br/>` : ''}${feature.properties.username !== 'None' ? `${feature.properties.username}<br/>` : ''}<video autoplay width='100%' controls onerror="videoError(this)" src="/${feature.properties.id}" />`)
+    .setLngLat(features[0].geometry.coordinates)
+    .setHTML('<div style="max-height: 300px; overflow: auto">' + popupHTML + '</div>')
     .addTo(map)
 })
 
