@@ -56,9 +56,9 @@ async function storeDupes () {
 async function run() {
   await db.connect()
   await setupDb()
-  await storeMirrorList(require('./data/mirror1.json'))
-  await storeMirrorList(require('./data/mirror2.json'))
   await storeMirrorList(require('./data/mirror3.json'))
+  await storeMirrorList(require('./data/mirror1.json'))
+  // await storeMirrorList(require('./data/mirror2.json'))
   await primaryList()
   // await storeDupes()
   db.end()
