@@ -19,54 +19,73 @@
         <meta name="twitter:image" content="https://imgix.lifehacker.com.au/content/uploads/sites/4/2020/11/26/parler-hack.png" />
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
+        
         <style>
           #controls {
             font-family: sans-serif;
             position: absolute;;
-            top: 10px;
+            top: 60px;
             right: 10px;
-            background: rgba(255,255,255, 0.6);
             padding: 10px;
+            border-radius: 5px;
+            background: white;
+            border: 1px solid black;
+            z-index: 100;
+          }
+          #controls, .mapboxgl-ctrl {
+            opacity: 60%;
           }
         </style>
       </head>
       <body style='margin:0'>
         <div id='map' style='width: 100vw; height: 100vh;'></div>
         
-        <!-- <div id="controls">
+        <div id="controls">
           <strong>Filters</strong><br/>
           <input type="checkbox" onchange="setUser(this.checked)" /> Has user-info<br/>
           Date: <input type="date" onchange="setStart(this.value)" value="2018-06-01" /> - <input value="2021-01-11" type="date" onchange="setEnd(this.value)"/>
-        </div> -->
+        </div>
 
 <script>
-let user = false
-let start = "2018-06-01"
-let end =  "2021-01-11"
+const dataLayer = 'parler-drm78a'
+
+const filterFields = {
+  user: false,
+  start: "2018-06-01",
+  end: "2021-01-11"
+}
 
 function setStart(d) {
-  start = d
+  filterFields.start = d
   updateFilter()
 }
 
 function setEnd(d) {
-  end = d
+  filterFields.end = d
   updateFilter()
 }
 
 function setUser(d) {
-  user = d
+  filterFields.user = d
   updateFilter()
 }
 
 function updateFilter() {
-  // TODO: update map filter here
-  console.log('update filter', { user, start, end })
+  map.setFilter(dataLayer,
+    [
+      "all",
+      [filterFields.user ? '!=' : "==", "username", 'None'],
+      [">", "time", filterFields.start],
+      ["<", "time", filterFields.end]
+    ]
+  )
 }
 
 mapboxgl.accessToken = "pk.eyJ1IjoiZGF2aWRrb25zdW1lciIsImEiOiJja2R0OHl2OXQwcGh1MnNtcGRleDRpeWRpIn0.lGkSZTG8nmxltvK6uF8NHw";
 
-var map = new mapboxgl.Map({
+const map = new mapboxgl.Map({
   style: "mapbox://styles/davidkonsumer/ckjy9hcyn12at17pa2dyr5tch",
   center: [-95.91128797690739, 39.10422463446551],
   zoom: 3.8288679503782523,
@@ -75,20 +94,31 @@ var map = new mapboxgl.Map({
   attributionControl: false
 })
 
-map.on('click', function(e) {
-  var features = map.queryRenderedFeatures(e.point, {
-    layers: ['parler-drm78a']
+map.on('load', () => {
+  updateFilter()
+})
+
+map.addControl(
+  new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl
+  })
+)
+
+map.on('click', (e) => {
+  const features = map.queryRenderedFeatures(e.point, {
+    layers: [dataLayer]
   })
 
   if (!features.length) {
     return
   }
 
-  var feature = features[0]
+  const feature = features[0]
 
-  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+  const popup = new mapboxgl.Popup({ offset: [0, -15] })
     .setLngLat(feature.geometry.coordinates)
-    .setHTML(`${feature.properties.id}<p>${feature.properties.time}</p>${feature.properties.displayname !== 'None' ? `<p>${feature.properties.displayname}</p>` : ''}${feature.properties.username !== 'None' ? `<p>${feature.properties.username}</p>` : ''}<video autoplay width='100%' controls onerror="videoError(this)" src="/${feature.properties.id}" />`)
+    .setHTML(`${feature.properties.id}<br/>${feature.properties.time}<br/>${feature.properties.displayname !== 'None' ? `${feature.properties.displayname}<br/>` : ''}${feature.properties.username !== 'None' ? `${feature.properties.username}<br/>` : ''}<video autoplay width='100%' controls onerror="videoError(this)" src="/${feature.properties.id}" />`)
     .addTo(map)
 })
 
