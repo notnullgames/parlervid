@@ -118,11 +118,10 @@ map.on('click', (e) => {
 
   const popupHTML = features.map(feature => `
   <p style="border: 1px solid black; padding: 5px;">
-    <strong>${feature.properties.id}</strong><br/>
+    <strong><a href="/${feature.properties.id}">${feature.properties.id}</strong></a><br/>
     ${feature.properties.time}<br/>
     ${feature.properties.displayname !== 'None' ? `${feature.properties.displayname}<br/>` : ''}
     ${feature.properties.username !== 'None' ? `${feature.properties.username}<br/>` : ''}
-    <video width='100%' controls onerror="videoError(this)" src="/${feature.properties.id}" />
   </p>
   `).join('')
 
@@ -133,13 +132,6 @@ map.on('click', (e) => {
     .setHTML('<div style="max-height: 300px; overflow: auto">' + popupHTML + '</div>')
     .addTo(map)
 })
-
-function videoError(vid){
-  const div = document.createElement("div")
-  div.className = 'error'
-  div.innerHTML = `Sorry, <a href="${vid.src}">that video</a> is not available.<br/>We'll have to wait for the archive to be hosted somewhere.` 
-  vid.replaceWith(div)
-}
 
 </script>
 </body>
