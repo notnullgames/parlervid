@@ -4,11 +4,14 @@ This is a very simple proxy that tries to pick the right mirror for a video ID.
 
 const express = require('express')
 const ytdl = require('ytdl-core')
-const db = require('./db')
+
+const mirrors = {
+  ...require('./data/mirror3.json'),
+  ...require('./data/mirror2.json'),
+  ...require('./data/mirror1.json')
+}
 
 const { PORT = 5000 } = process.env
-
-db.connect()
 
 express()
   // show the map
@@ -29,13 +32,11 @@ express()
     if (!id) {
       throw new Error('No id.')
     }
-    const r = await db.query('SELECT url FROM mirrors WHERE id=$1 LIMIT 1', [id])
-    if (r && r.rows && r.rows[0]) {
-      console.log(`${id} URL found: ${r.rows[0].url}`)
-      return res.redirect(301, r.rows[0].url)
+
+    if (mirrors[id]) {
+      return res.redirect(301, mirrors[id])
     } else {
-      console.log(`No video URL found for ${id}`)
-      res.status(404).type('txt').send('Not found')
+      return res.redirect(301, `https://pl.gammaspectra.live/video.parler.com/${id.substr(0,2)}/${id.substr(2,2)}/${id}`)
     }
   })
 
